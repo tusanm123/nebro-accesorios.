@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Catálogo de accesorios NEBRO México.">
+<title>NEBRO México | Accesorios para celular</title>
+
+<style>
+:root {
+  --naranja: #ff7900;
+  --oscuro: #101820;
+  --verde: #08b45a;
+  --fondo: #f5f6f7;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--oscuro);
+}
+a { text-decoration: none; }
+button, input, select { font: inherit; }
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--oscuro);
+  color: white;
+}
+.nav {
+  max-width: 1200px;
+  margin: auto;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.logo {
+  color: white;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+.logo span { color: var(--naranja); }
+nav { display: flex; gap: 20px; }
+nav a { color: white; font-weight: bold; }
+nav a:hover { color: var(--naranja); }
+
+.btn {
+  display: inline-block;
+  padding: 12px 16px;
+  color: white;
+  background: var(--verde);
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+}
+.btn:hover { filter: brightness(.93); }
+.btn.dark { background: var(--oscuro); }
+
+.hero {
+  color: white;
+  background:
+    radial-gradient(circle at 80% 40%, #806354, #26343d 40%, #101820 78%);
+  padding: 52px 22px;
+}
+.hero-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+.eyebrow {
+  color: #ffad75;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+h1 {
+  font-size: clamp(38px, 6vw, 64px);
+  line-height: 1.05;
+  margin: 14px 0;
+}
+.hero p { color: #eee; line-height: 1.6; font-size: 18px; }
+.hero-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.hero-gallery img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  padding: 10px;
+  border-radius: 12px;
+  background: #ffffff15;
+}
+.wrap { max-width: 1200px; margin: auto; }
+section { padding: 40px 22px; }
+h2 { margin-top: 0; font-size: 30px; }
+
+.category-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.category-tile {
+  padding: 15px;
+  text-align: center;
+  font-weight: bold;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.category-tile:hover { border-color: var(--naranja); }
+.category-tile img {
+  display: block;
+  width: 100%;
+  height: 85px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 12px;
+  margin: 20px 0;
+}
+input, select {
+  width: 100%;
+  padding: 14px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+}
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.card-photo {
+  width: 100%;
+  height: 230px;
+  padding: 12px;
+  border: 0;
+  background: #f5f5f5;
+  cursor: zoom-in;
+}
+.card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.card-info {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.category {
+  color: #d65300;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.card h3 { margin: 0; font-size: 17px; }
+.muted { color: #666; font-size: 13px; line-height: 1.5; }
+.card-info .btn { width: 100%; margin-top: auto; }
+
+.contact { background: var(--fondo); }
+.contact-box {
+  padding: 25px;
+  background: white;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+footer {
+  padding: 28px 22px;
+  background: var(--oscuro);
+  color: white;
+  text-align: center;
+}
+
+/* Ficha ampliada con galería */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  padding: 18px;
+  background: #000b;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 1120px;
+  max-height: 94vh;
+  overflow: auto;
+  background: white;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1.02fr .98fr;
+}
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: white;
+  font-size: 25px;
+  cursor: pointer;
+}
+.gallery {
+  min-width: 0;
+  padding: 25px;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.gallery-main {
+  width: 100%;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.gallery-main img {
+  width: calc(100% - 70px);
+  height: min(50vh, 440px);
+  object-fit: contain;
+  background: white;
+}
+.arrow {
+  flex: 0 0 34px;
+  height: 42px;
+  border: 0;
+  border-radius: 9px;
+  background: white;
+  box-shadow: 0 2px 8px #0001;
+  font-size: 23px;
+  cursor: pointer;
+}
+.thumbnails {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+.thumb {
+  height: 64px;
+  padding: 3px;
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.thumb.active { border-color: var(--naranja); }
+.thumb img { width: 100%; height: 100%; object-fit: contain; }
+.gallery-count { color: #666; font-size: 12px; }
+.modal-content { padding: 34px 30px; overflow-wrap: anywhere; }
+.modal-content h2 { margin: 8px 0; font-size: 28px; }
+.modal-content p, .modal-content li { line-height: 1.6; color: #555; }
+.modal-content li { margin-bottom: 5px; }
+.modal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 650px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-gallery img { height: 110px; }
+  .category-tiles { grid-template-columns: repeat(2, 1fr); }
+  .filters { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .card-photo { height: 165px; }
+  .nav { padding: 12px 15px; }
+  nav { width: 100%; justify-content: space-between; }
+  nav a { font-size: 14px; }
+  .modal { padding: 8px; }
+  .modal-panel { grid-template-columns: 1fr; max-height: 96vh; }
+  .gallery { padding: 12px; }
+  .gallery-main { min-height: 180px; }
+  .gallery-main img { height: 30vh; max-height: 280px; }
+  .modal-content { padding: 20px; }
+  .modal-content h2 { font-size: 23px; }
+  .thumb { height: 50px; }
+  .contact-box { align-items: flex-start; flex-direction: column; }
+}
+@media (max-width: 360px) {
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="nav">
+    <a class="logo" href="#inicio">NEB<span>RO</span></a>
+    <nav>
+      <a href="#inicio">Inicio</a>
+      <a href="#productos">Productos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn" href="https://wa.me/525615864343" target="_blank" rel="noopener">
+      WhatsApp
+    </a>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">ACCESORIOS PARA TU DÍA A DÍA</div>
+      <h1>Tecnología y calidad en un solo lugar</h1>
+      <p>
+        Cables, cargadores, audífonos, baterías y más.
+        Consulta directamente por WhatsApp.
+      </p>
+      <a class="btn" href="#productos">Ver productos</a>
+      <a class="btn dark" href="https://wa.me/525615864343" target="_blank" rel="noopener">
+        Contactar
+      </a>
+    </div>
+    <div class="hero-gallery">
+      <img src="https://nebro.shop/cdn/shop/files/WD-319-7.jpg?width=600" alt="Cable NEBRO">
+      <img src="https://nebro.shop/cdn/shop/files/WB-162-7.jpg?width=600" alt="Batería NEBRO">
+      <img src="https://nebro.shop/cdn/shop/files/GaN_30W_charger_with_cable_202606291611.jpg?width=600" alt="Cargador NEBRO">
+      <img src="https://nebro.shop/cdn/shop/files/WE-017_e80a09e6-5507-4531-8f1f-08c79ebdf761.jpg?width=600" alt="Audífonos NEBRO">
+    </div>
+  </div>
+</section>
+
+<section id="productos">
+<div class="wrap">
+  <h2>Categorías</h2>
+  <div class="category-tiles">
+    <button class="category-tile" data-tile="Cables">Cables</button>
+    <button class="category-tile" data-tile="Baterías portátiles">Baterías portátiles</button>
+    <button class="category-tile" data-tile="Cargadores">Cargadores</button>
+    <button class="category-tile" data-tile="Audífonos">Audífonos</button>
+  </div>
+
+  <h2>Nuestros productos</h2>
+  <p class="muted">Pulsa cualquier fotografía para abrir su galería y consultar los detalles.</p>
+
+  <div class="filters">
+    <input id="search" type="search" placeholder="Buscar producto o modelo…">
+    <select id="category">
+      <option value="todos">Todas las categorías</option>
+      <option>Cables</option>
+      <option>Cargadores</option>
+      <option>Audífonos</option>
+      <option>Baterías portátiles</option>
+      <option>Soportes</option>
+      <option>Otros</option>
+    </select>
+  </div>
+
+  <div class="grid" id="productGrid"></div>
+</div>
+</section>
+
+<section class="contact" id="contacto">
+  <div class="wrap contact-box">
+    <div>
+      <h2>¿Tienes alguna pregunta?</h2>
+      <p>Consulta precio, disponibilidad y características de los productos.</p>
+      <strong>WhatsApp: +52 56 1586 4343</strong>
+    </div>
+    <a class="btn" href="https://wa.me/525615864343" target="_blank" rel="noopener">
+      Consultar por WhatsApp
+    </a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <strong>NEBRO MÉXICO</strong>
+  <p>Cables · Cargadores · Audífonos · Baterías</p>
+  <small>Confirma precios, existencias y especificaciones antes de comprar.</small>
+</footer>
+
+<!-- Ventana de detalles y galería -->
+<div class="modal" id="productModal" aria-hidden="true">
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="closeModal" aria-label="Cerrar">×</button>
+
+    <div class="gallery">
+      <div class="gallery-main">
+        <button class="arrow" id="prevImage" aria-label="Fotografía anterior">‹</button>
+        <img id="mainImage" src="" alt="Fotografía del producto">
+        <button class="arrow" id="nextImage" aria-label="Fotografía siguiente">›</button>
+      </div>
+      <div class="thumbnails" id="thumbnails"></div>
+      <div class="gallery-count" id="galleryCount"></div>
+    </div>
+
+    <div class="modal-content">
+      <div class="category" id="modalCategory"></div>
+      <h2 id="modalTitle"></h2>
+      <div class="muted" id="modalModel"></div>
+      <p id="modalDescription"></p>
+      <h3>Características e información</h3>
+      <ul id="modalFeatures"></ul>
+      <p class="muted">
+        Confirma las especificaciones técnicas exactas, el precio y las existencias
+        antes de publicar o comprar.
+      </p>
+      <div class="modal-actions">
+        <a class="btn" id="modalWhatsApp" target="_blank" rel="noopener">
+          Consultar por WhatsApp
+        </a>
+        <button class="btn dark" id="continueButton">Seguir viendo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const WHATSAPP = "https://wa.me/525615864343";
+
+/*
+  Cada producto tiene:
+  - image: foto principal
+  - images: fotografías adicionales REALES del mismo producto.
+
+  Añade las URL reales de cada ángulo en "images".
+  No uses fotos de otro modelo como si fueran del producto.
+*/
+const products = [
+  {
+    name: "Cable NEBRO",
+    model: "WD-319",
+    category: "Cables",
+    image: "https://nebro.shop/cdn/shop/files/WD-319-7.jpg?width=1000",
+    images: [
+      "https://nebro.shop/cdn/shop/files/WD-319-7.jpg?width=1000"
+    ]
+  },
+  {
+    name: "Cable NEBRO",
+    model: "WD-342",
+    category: "Cables",
+    image: "https://i.ibb.co/ZRpD83XQ/WD-342-1.jpg",
+    images: ["https://i.ibb.co/ZRpD83XQ/WD-342-1.jpg"]
+  },
+  {
+    name: "Cable NEBRO",
+    model: "WD-338",
+    category: "Cables",
+    image: "https://i.ibb.co/wF23cXmz/WD-338-7.jpg",
+    images: ["https://i.ibb.co/wF23cXmz/WD-338-7.jpg"]
+  },
+  {
+    name: "Cable NEBRO",
+    model: "WD-341",
+    category: "Cables",
+    image: "https://i.ibb.co/Z6Z69n1y/WD-341-10.jpg",
+    images: ["https://i.ibb.co/Z6Z69n1y/WD-341-10.jpg"]
+  },
+  {
+    name: "Cable NEBRO",
+    model: "WD-301T",
+    category: "Cables",
+    image: "https://nebro.shop/cdn/shop/files/WDD-2.jpg?width=1000",
+    images: ["https://nebro.shop/cdn/shop/files/WDD-2.jpg?width=1000"]
+  },
+  {
+    name: "Batería portátil NEBRO",
+    model: "WB-160",
+    category: "Baterías portátiles",
+    image: "https://i.ibb.co/qLtnb74q/WB-160-1.jpg",
+    images: ["https://i.ibb.co/qLtnb74q/WB-160-1.jpg"]
+  },
+  {
+    name: "Batería portátil NEBRO",
+    model: "WB-161",
+    category: "Baterías portátiles",
+    image: "https://i.ibb.co/f3SvWh8/WB-161-9.jpg",
+    images: ["https://i.ibb.co/f3SvWh8/WB-161-9.jpg"]
+  },
+  {
+    name: "Batería portátil NEBRO",
+    model: "WB-157",
+    category: "Baterías portátiles",
+    image: "https://i.ibb.co/8n3jCZ0J/WB-157-4.jpg",
+    images: ["https://i.ibb.co/8n3jCZ0J/WB-157-4.jpg"]
+  },
+  {
+    name: "Batería portátil NEBRO",
+    model: "WB-004",
+    category: "Baterías portátiles",
+    image: "https://i.ibb.co/QvDNJSsv/WB-004-3.jpg",
+    images: ["https://i.ibb.co/QvDNJSsv/WB-004-3.jpg"]
+  },
+  {
+    name: "Batería portátil NEBRO",
+    model: "WB-162",
+    category: "Baterías portátiles",
+    image: "https://nebro.shop/cdn/shop/files/WB-162-7.jpg?width=1000",
+    images: ["https://nebro.shop/cdn/shop/files/WB-162-7.jpg?width=1000"]
+  },
+  {
+    name: "Batería portátil NEBRO",
+    model: "WB-014",
+    category: "Baterías portátiles",
+    image: "https://nebro.shop/cdn/shop/files/WB-014_2.jpg?width=1000",
+    images: ["https://nebro.shop/cdn/shop/files/WB-014_2.jpg?width=1000"]
+  },
+  {
+    name: "Batería portátil NEBRO",
+    model: "WB-155",
+    category: "Baterías portátiles",
+    image: "https://nebro.shop/cdn/shop/files/WB-155_2.jpg?width=1000",
+    images: ["https://nebro.shop/cdn/shop/files/WB-155_2.jpg?width=1000"]
+  },
+  {
+    name: "Cargador NEBRO",
+    model: "VGA-205",
+    category: "Cargadores",
+    image: "https://i.ibb.co/DPkNcLjx/VGA-205-4.jpg",
+    images: ["https://i.ibb.co/DPkNcLjx/VGA-205-4.jpg"]
+  },
+  {
+    name: "Adaptador de carga NEBRO PD 20W",
+    model: "Modelo por confirmar",
+    category: "Cargadores",
+    image: "https://i.ibb.co/rnysB0Q/caja-en-mejor-definicion-202606291235.jpg",
+    images: ["https://i.ibb.co/rnysB0Q/caja-en-mejor-definicion-202606291235.jpg"]
+  },
+  {
+    name: "Cargador NEBRO",
+    model: "VGA-056T",
+    category: "Cargadores",
+    image: "https://i.ibb.co/XxYJpxTs/caja-en-mejor-definicion-202606291640.jpg",
+    images: ["https://i.ibb.co/XxYJpxTs/caja-en-mejor-definicion-202606291640.jpg"]
+  },
+  {
+    name: "Combo de carga NEBRO",
+    model: "Modelo por confirmar",
+    category: "Cargadores",
+    image: "https://i.ibb.co/67tSLTx6/caja-en-mejor-definicion-202606291940.jpg",
+    images: ["https://i.ibb.co/67tSLTx6/caja-en-mejor-definicion-202606291940.jpg"]
+  },
+  {
+    name: "Cargador NEBRO 65 W",
+    model: "Modelo por confirmar",
+    category: "Cargadores",
+    image: "https://nebro.shop/cdn/shop/files/quita_el_cable_y_centra_202606291631.jpg?width=1000",
+    images: ["https://nebro.shop/cdn/shop/files/quita_el_cable_y_centra_202606291631.jpg?width=1000"]
+  },
+  {
+    name: "Cargador GaN NEBRO 30 W",
+    model: "Modelo por confirmar",
+    category: "Cargadores",
+    image: "https://nebro.shop/cdn/shop/files/GaN_30W_charger_with_cable_202606291611.jpg?width=1000",
+    images: ["https://nebro.shop/cdn/shop/files/GaN_30W_charger_with_cable_202606291611.jpg?width=1000"]
+  },
+  {
+    name: "Cargador NEBRO",
+    model: "VGA-051",
+    category: "Cargadores",
+    image: "https://nebro.shop/cdn/shop/files/Nebro_VGA-051_charger_white_202606291539-2.jpg?width=1000",
+    images: ["https://nebro.shop/cdn/shop/files/Nebro_VGA-051_charger_white_202606291539-2.jpg?width=1000"]
+  },
+  {
+    name: "Audífonos NEBRO",
+    model: "WE-017",
+    category: "Audífonos",
+    image: "https://nebro.shop/cdn/shop/files/WE-017_e80a09e6-5507-4531-8f1f-08c79ebdf761.jpg?width=1000",
+    images: ["https://nebro.shop/cdn/shop/files/WE-017_e80a09e6-5507-4531-8f1f-08c79ebdf761.jpg?width=1000"]
+  },
+  {
+    name: "Audífonos inalámbricos NEBRO",
+    model: "Modelo por confirmar",
+    category: "Audífonos",
+    image: "https://nebro.shop/cdn/shop/files/365258ea92270dcd27f3a606c7850734.png?width=800",
+    images: ["https://nebro.shop/cdn/shop/files/365258ea92270dcd27f3a606c7850734.png?width=800"]
+  },
+  {
+    name: "Soporte magnético para auto NEBRO",
+    model: "WAT-906",
+    category: "Soportes",
+    image: "https://i.ibb.co/J0k1rGG/WAT-906-9.jpg",
+    images: ["https://i.ibb.co/J0k1rGG/WAT-906-9.jpg"]
+  },
+  {
+    name: "Accesorio NEBRO",
+    model: "WO-D12T",
+    category: "Otros",
+    image: "https://i.ibb.co/rRkF2W0g/caja-en-mejor-definicion-202606292200.jpg",
+    images: ["https://i.ibb.co/rRkF2W0g/caja-en-mejor-definicion-202606292200.jpg"]
+  },
+  {
+    name: "Accesorio NEBRO",
+    model: "MD-30YL",
+    category: "Otros",
+    image: "https://i.ibb.co/35CMXg9K/309-10.jpg",
+    images: ["https://i.ibb.co/35CMXg9K/309-10.jpg"]
+  },
+  {
+    name: "Cable magnético USB-C NEBRO",
+    model: "Modelo por confirmar",
+    category: "Cables",
+    image: "https://i.ibb.co/MyFCn4Vx/dame-la-imagen-mejor-definicion-202606292014.jpg",
+    images: ["https://i.ibb.co/MyFCn4Vx/dame-la-imagen-mejor-definicion-202606292014.jpg"]
+  }
+];
+
+const grid = document.getElementById("productGrid");
+const search = document.getElementById("search");
+const category = document.getElementById("category");
+const modal = document.getElementById("productModal");
+const mainImage = document.getElementById("mainImage");
+const thumbnails = document.getElementById("thumbnails");
+const galleryCount = document.getElementById("galleryCount");
+
+let currentProduct = null;
+let currentImages = [];
+let currentImageIndex = 0;
+let previousFocus = null;
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  }[char]));
+}
+
+function productFeatures(product) {
+  const features = {
+    "Cables": [
+      "Accesorio para conectar dispositivos compatibles y/o suministrar carga.",
+      "Confirma el tipo de conector y la longitud.",
+      "La velocidad depende del modelo y del equipo."
+    ],
+    "Cargadores": [
+      "Accesorio para cargar dispositivos compatibles.",
+      "Confirma potencia, puertos y protocolos admitidos.",
+      "La carga rápida depende del dispositivo y cable."
+    ],
+    "Audífonos": [
+      "Accesorio de audio para dispositivos compatibles.",
+      "Confirma conexión, autonomía y controles del modelo.",
+      "Las funciones dependen del dispositivo utilizado."
+    ],
+    "Baterías portátiles": [
+      "Batería portátil para recargar dispositivos compatibles.",
+      "Confirma capacidad, puertos y potencia de salida.",
+      "La cantidad de cargas depende del dispositivo."
+    ],
+    "Soportes": [
+      "Accesorio para colocar o sujetar un teléfono.",
+      "Confirma el tipo de montaje y compatibilidad.",
+      "Verifica la instalación antes de utilizarlo."
+    ],
+    "Otros": [
+      "Consulta la fotografía y presentación del producto.",
+      "Solicita información sobre compatibilidad y contenido.",
+      "Confirma las características exactas antes de comprar."
+    ]
+  };
+  return features[product.category] || features["Otros"];
+}
+
+function renderProducts() {
+  const term = search.value.trim().toLowerCase();
+  const selected = category.value;
+
+  const filtered = products.filter(product => {
+    const text = `${product.name} ${product.model} ${product.category}`.toLowerCase();
+   
